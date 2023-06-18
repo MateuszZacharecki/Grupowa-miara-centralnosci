@@ -255,6 +255,31 @@ double group_attachment(slistEl *G[], vector <int> T)
     return centralnosc;
 }
 
+double* max_attachment(double max_centralnosc[], slistEl *G[], int rozmiar,
+    int index, int T_tablica[], int i)
+{
+    // obecna kombinacja jest gotowa, sprawdzamy,
+    // czy maksymalizuje ona dotychczas rozwazon¹ grupow¹ centralnoœæ ³¹czenia
+    if (index==rozmiar) {
+        vector <int> T;
+        T=to_vector(T_tablica, rozmiar);
+        double centralnosc=group_attachment(G,T);
+        if (centralnosc>max_centralnosc[rozmiar])
+        {
+            for (int j=0; j<rozmiar; j++) max_centralnosc[j]=T_tablica[j];
+            max_centralnosc[rozmiar]=centralnosc;
+        }
+        return max_centralnosc;
+    }
+    // gdy nie ma wiecej elementów do dodania do T_tablica[]
+    if (i>=n)
+        return max_centralnosc;
+    T_tablica[index]=i;
+    max_attachment(max_centralnosc, G, rozmiar, index+1, T_tablica, i+1);
+    max_attachment(max_centralnosc, G, rozmiar, index, T_tablica, i+1);
+    return max_centralnosc;
+}
+
 int main()
 {
     slistEl **G;
@@ -264,12 +289,16 @@ int main()
     int rozmiar;
     cout<<"Insert size of group: ";
     cin>>rozmiar;
+    // w tablicy max_centralnosc[] beda przechowywane wierzcholki grupy,
+    // która maksymalizuje grupow¹ centralnoœæ ³¹czenia
+    // na ostatniej pozycji bedzie trzymany najwieksz¹ wartoœæ grupowej centralnoœci ³¹cznoœci,
+    // stad tablica max_groupatt[] ma o 1 wiekszy rozmiar niz rozmiar zadany
+    double max_centralnosc[rozmiar+1];
+    for (int i=0; i<=rozmiar; i++) max_centralnosc[i]=-1;
     int T_tablica[rozmiar];
-    cout<<"Insert "<<rozmiar<<" elements of group: "<<endl;
-    for (int i=0; i<rozmiar; i++) cin>>T_tablica[i];
-    vector <int> T;
-    T=to_vector(T_tablica,rozmiar);
-    double centralnosc=group_attachment(G,T);
-    cout<<centralnosc<<endl;
+    max_attachment(max_centralnosc, G, rozmiar, 0, T_tablica, 0);
+    int max_grupa[rozmiar];
+    for (int i=0; i<rozmiar; i++) max_grupa[i]=int(max_centralnosc[i]);
+    for (int i=0; i<rozmiar; i++) cout<<max_grupa[i]<<endl;
     return 0;
 }
