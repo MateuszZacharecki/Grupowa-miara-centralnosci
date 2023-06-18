@@ -17,7 +17,7 @@ k_1 k_2 ... k_n -1
 
 
 gdzie każdy wiersz pliku odpowiada wierzchołkowi grafu, a elementy w wierszach to jego
-sąsiedzi, tzn. według powyższego schematu sąsiedzi wierzchołka 0 to a1, a2, ..., an. Numery
+sąsiedzi, tzn. według powyższego schematu sąsiedzi wierzchołka 0 to a_1, a_2, ..., a_n. Numery
 wierzchołków w wierszach muszą być oddzielone spacjami, a każdy wiersz musi się kończyć
 liczbą -1.
 
